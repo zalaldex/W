@@ -49,7 +49,8 @@ func main() {
 		port = "8080"
 	}
 
-	webhookURL := "https://" + os.Getenv("RENDER_EXTERNAL_HOSTNAME") + "/" + token
+	webhookURL := "https://" + os.Getenv("RAILWAY_PUBLIC_DOMAIN") + "/" + token
+	
 
 	poller := &tele.Webhook{
 		Listen:   ":" + port,
