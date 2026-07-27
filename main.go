@@ -2,10 +2,8 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 	"sync"
-	"time"
 
 	tele "gopkg.in/telebot.v3"
 )
@@ -46,9 +44,21 @@ func main() {
 		log.Fatal("BOT_TOKEN environment variable is required")
 	}
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	webhookURL := "https://" + os.Getenv("RENDER_EXTERNAL_HOSTNAME") + "/" + token
+
+	poller := &tele.Webhook{
+		Listen:   ":" + port,
+		Endpoint: &tele.WebhookEndpoint{PublicURL: webhookURL},
+	}
+
 	bot, err := tele.NewBot(tele.Settings{
 		Token:  token,
-		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
+		Poller: poller,
 	})
 	if err != nil {
 		log.Fatalf("failed to start bot: %v", err)
@@ -113,29 +123,8 @@ func main() {
 		return handleMedia(c, mode, mainMenu)
 	})
 
-	go serveHealthCheck()
-
 	log.Println("bot started")
 	bot.Start()
-}
-
-// serveHealthCheck runs a minimal HTTP server so the process satisfies
-// Render's Web Service port-binding and health-check requirements. It
-// carries no Telegram traffic; updates are still received via long
-// polling in bot.Start().
-func serveHealthCheck() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("ok"))
-	})
-	log.Printf("health check server listening on :%s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatalf("health check server failed: %v", err)
-	}
 }
 
 // sendRendered renders text under mode and sends it, splitting across
