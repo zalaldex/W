@@ -25,6 +25,6 @@ func LoadConfig() (Config, error) {
 	return Config{
 		Token:  token,
 		Port:   port,
-		Domain: os.Getenv("RAILWAY_PUBLIC_DOMAIN"),
+		Domain: os.Getenv("PUBLIC_DOMAIN"),     //# os.Getenv("RAILWAY_PUBLIC_DOMAIN"),
 	}, nil
 }
