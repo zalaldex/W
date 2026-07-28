@@ -13,7 +13,6 @@ This repository has been refactored into a Domain-Driven ("Package by Feature") 
 <!--
 This text is hidden.
 It won't appear in the rendered Markdown.
--->
 
 To run locally:
 ```bash
