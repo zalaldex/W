@@ -1,0 +1,25 @@
+package main
+
+import "strings"
+
+// Render converts text into Telegram monospace formatting according to
+// mode. Each unit (word, sentence, paragraph, or the whole text) is wrapped
+// individually in its own code span, separated by the same whitespace that
+// originally separated the units, so content and spacing are preserved.
+func Render(mode Mode, text string) string {
+	switch mode {
+	case ModeWord:
+		return renderUnits(text, splitWords)
+	case ModeSentence:
+		return renderUnits(text, splitSentences)
+	case ModeParagraph:
+		return renderUnits(text, splitParagraphs)
+	case ModeFull:
+		fallthrough
+	default:
+		if strings.TrimSpace(text) == "" {
+			return text
+		}
+		return wrapCode(text)
+	}
+}
