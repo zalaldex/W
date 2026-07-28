@@ -1,20 +1,24 @@
 package render
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/zalaldex/W/internal/mode"
+)
 
 // Render converts text into Telegram monospace formatting according to
 // mode. Each unit (word, sentence, paragraph, or the whole text) is wrapped
 // individually in its own code span, separated by the same whitespace that
 // originally separated the units, so content and spacing are preserved.
-func Render(mode string, text string) string {
-	switch mode {
-	case "word":
+func Render(m mode.Mode, text string) string {
+	switch m {
+	case mode.ModeWord:
 		return renderUnits(text, splitWords)
-	case "sentence":
+	case mode.ModeSentence:
 		return renderUnits(text, splitSentences)
-	case "paragraph":
+	case mode.ModeParagraph:
 		return renderUnits(text, splitParagraphs)
-	case "full":
+	case mode.ModeFull:
 		fallthrough
 	default:
 		if strings.TrimSpace(text) == "" {

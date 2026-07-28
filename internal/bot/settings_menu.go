@@ -2,6 +2,8 @@ package bot
 
 import tele "gopkg.in/telebot.v3"
 
+import "github.com/zalaldex/W/internal/mode"
+
 // settingsMenuButtons groups the buttons on the settings keyboard so
 // handlers can be registered against the same button values used to build
 // the menu.
@@ -18,10 +20,10 @@ type settingsMenuButtons struct {
 func newSettingsMenu() (*tele.ReplyMarkup, settingsMenuButtons) {
 	menu := &tele.ReplyMarkup{ResizeKeyboard: true}
 	btns := settingsMenuButtons{
-		Word:      menu.Text(ModeLabel(ModeWord)),
-		Sentence:  menu.Text(ModeLabel(ModeSentence)),
-		Paragraph: menu.Text(ModeLabel(ModeParagraph)),
-		Full:      menu.Text(ModeLabel(ModeFull)),
+		Word:      menu.Text(mode.ModeLabel(mode.ModeWord)),
+		Sentence:  menu.Text(mode.ModeLabel(mode.ModeSentence)),
+		Paragraph: menu.Text(mode.ModeLabel(mode.ModeParagraph)),
+		Full:      menu.Text(mode.ModeLabel(mode.ModeFull)),
 		Back:      menu.Text("⬅️ Back"),
 	}
 	menu.Reply(
