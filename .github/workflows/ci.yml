@@ -34,4 +34,3 @@ jobs:
 
       - name: Build Binary
         run: CGO_ENABLED=0 go build -o bot-binary ./cmd/bot
-        
