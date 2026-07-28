@@ -18,7 +18,7 @@ type mainMenuButtons struct {
 func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 	menu := &tele.ReplyMarkup{
 		ResizeKeyboard: true,
-		IsPersistent:   true, // Forces Telegram to always show this keyboard
+		IsPersistent:   false, // Forces Telegram to always show this keyboard
 	}
 	btns := mainMenuButtons{
 		Start:    menu.Text("▶️ Start"),
