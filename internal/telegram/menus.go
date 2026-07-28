@@ -5,6 +5,10 @@ import (
 	tele "gopkg.in/telebot.v3"
 )
 
+// ==========================================
+// Main Menu (Persistent Reply Keyboard)
+// ==========================================
+
 type mainMenuButtons struct {
 	Start    tele.Btn
 	Settings tele.Btn
@@ -13,7 +17,7 @@ type mainMenuButtons struct {
 func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 	menu := &tele.ReplyMarkup{
 		ResizeKeyboard:  true,
-		OneTimeKeyboard: true,
+		OneTimeKeyboard: true, // Hides the keyboard after use, accessible via the UI icon
 	}
 	btns := mainMenuButtons{
 		Start:    menu.Text("▶️ Start"),
@@ -23,12 +27,17 @@ func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 	return menu, btns
 }
 
+// ==========================================
+// Settings Menu (Dynamic Inline Keyboard)
+// ==========================================
+
+// Stable inline buttons for routing in handlers.go
 var (
-	btnModeWord      = tele.InlineButton{Unique: "mode_word"}
-	btnModeSentence  = tele.InlineButton{Unique: "mode_sentence"}
-	btnModeParagraph = tele.InlineButton{Unique: "mode_paragraph"}
-	btnModeFull      = tele.InlineButton{Unique: "mode_full"}
-	btnStats         = tele.InlineButton{Unique: "stats_view"}
+	btnModeWord      = tele.Btn{Unique: "mode_word"}
+	btnModeSentence  = tele.Btn{Unique: "mode_sentence"}
+	btnModeParagraph = tele.Btn{Unique: "mode_paragraph"}
+	btnModeFull      = tele.Btn{Unique: "mode_full"}
+	btnStats         = tele.Btn{Unique: "stats_view"}
 )
 
 func newSettingsMenu(currentMode formatter.Mode) *tele.ReplyMarkup {
@@ -41,7 +50,9 @@ func newSettingsMenu(currentMode formatter.Mode) *tele.ReplyMarkup {
 		return formatter.ModeLabel(m)
 	}
 
+	// Copy base buttons to safely assign dynamic text without mutating global state
 	w, s, p, f, st := btnModeWord, btnModeSentence, btnModeParagraph, btnModeFull, btnStats
+	
 	w.Text = label(formatter.ModeWord)
 	s.Text = label(formatter.ModeSentence)
 	p.Text = label(formatter.ModeParagraph)
@@ -56,15 +67,19 @@ func newSettingsMenu(currentMode formatter.Mode) *tele.ReplyMarkup {
 	return menu
 }
 
-var statsRefreshBtn = tele.InlineButton{
+// ==========================================
+// Stats Menu (Inline Keyboard)
+// ==========================================
+
+var statsRefreshBtn = tele.Btn{
 	Unique: "stats_refresh",
 	Text:   "🔄 Refresh",
 }
 
 func statsMenu() *tele.ReplyMarkup {
 	menu := &tele.ReplyMarkup{}
-	menu.InlineKeyboard = [][]tele.InlineButton{
-		{statsRefreshBtn},
-	}
+	menu.Inline(
+		menu.Row(statsRefreshBtn),
+	)
 	return menu
 }
