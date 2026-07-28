@@ -1,0 +1,27 @@
+Add a Statistics button to your existing settings_menu.go.
+
+Your current settings_menu.go builds a keyboard with Word / Sentence /
+Paragraph / Full buttons plus (presumably) a Back button. Add one more row:
+
+    var statsBtn = menu.Text("📊 Statistics")
+
+and include statsBtn in the ReplyKeyboard rows returned by settingsMenu(),
+e.g.:
+
+    menu.Reply(
+        menu.Row(wordBtn, sentenceBtn),
+        menu.Row(paragraphBtn, fullBtn),
+        menu.Row(statsBtn),
+        menu.Row(backBtn),
+    )
+
+The exact line numbers depend on your file, since it wasn't provided — but
+the two things register_stats_handlers.go needs from you are:
+  1. A btn.Text("📊 Statistics") (or matching label) added to your settings
+     reply keyboard.
+  2. The same text string used in a bot.Handle(tele.Text, ...) or
+     bot.Handle(&statsBtn, ...) match in register_stats_handlers.go — see
+     that file, which currently matches on the literal text "📊 Statistics".
+
+If your label differs, update the string in register_stats_handlers.go to
+match exactly.
