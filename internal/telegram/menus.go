@@ -2,6 +2,7 @@ package telegram
 
 import (
 	"telegram-monospace-bot/internal/formatter"
+
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -16,8 +17,8 @@ type mainMenuButtons struct {
 
 func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 	menu := &tele.ReplyMarkup{
-		ResizeKeyboard:  true,
-		OneTimeKeyboard: true, // Hides the keyboard after use, accessible via the UI icon
+		ResizeKeyboard: true,
+		IsPersistent:   true, // Forces Telegram to always show this keyboard
 	}
 	btns := mainMenuButtons{
 		Start:    menu.Text("▶️ Start"),
@@ -31,7 +32,6 @@ func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 // Settings Menu (Dynamic Inline Keyboard)
 // ==========================================
 
-// Stable inline buttons for routing in handlers.go
 var (
 	btnModeWord      = tele.Btn{Unique: "mode_word"}
 	btnModeSentence  = tele.Btn{Unique: "mode_sentence"}
@@ -50,7 +50,6 @@ func newSettingsMenu(currentMode formatter.Mode) *tele.ReplyMarkup {
 		return formatter.ModeLabel(m)
 	}
 
-	// Copy base buttons to safely assign dynamic text without mutating global state
 	w, s, p, f, st := btnModeWord, btnModeSentence, btnModeParagraph, btnModeFull, btnStats
 	
 	w.Text = label(formatter.ModeWord)
