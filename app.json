@@ -1,0 +1,20 @@
+{
+  "name": "Monospace Telegram Bot",
+  "description": "Converts Telegram text and media captions to monospace.",
+  "repository": "https://github.com/your-username/telegram-monospace-bot",
+  "stack": "container",
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Your Telegram Bot Token from @BotFather",
+      "required": true
+    },
+    "PUBLIC_DOMAIN": {
+      "description": "Your public app domain (e.g., app-name.herokuapp.com). Exclude https://",
+      "required": true
+    },
+    "PORT": {
+      "description": "The port the webhook server binds to.",
+      "value": "8080"
+    }
+  }
+}

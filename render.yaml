@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: telegram-monospace-bot
+    env: docker
+    plan: free
+    disk:
+      name: sqlite-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: PORT
+        value: "8080"
+      - key: PUBLIC_DOMAIN
+        sync: false
