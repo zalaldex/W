@@ -9,7 +9,7 @@ import (
 
 var db *sql.DB
 
-const dbPath = "/data/stats.db"
+const dbPath = "./stats.db"
 
 func InitDB() error {
 	d, err := sql.Open("sqlite", dbPath+"?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)")
