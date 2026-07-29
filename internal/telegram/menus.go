@@ -45,7 +45,7 @@ func newSettingsMenu(currentMode formatter.Mode) *tele.ReplyMarkup {
 
 	label := func(m formatter.Mode) string {
 		if m == currentMode {
-			return "✔️ " + formatter.ModeLabel(m)
+			return "✓" + formatter.ModeLabel(m)
 		}
 		return formatter.ModeLabel(m)
 	}
