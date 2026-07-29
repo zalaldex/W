@@ -21,8 +21,8 @@ func newMainMenu() (*tele.ReplyMarkup, mainMenuButtons) {
 		//IsPersistent:   true, // Forces Telegram to always show this keyboard
 	}
 	btns := mainMenuButtons{
-		Start:    menu.Text("▶️ Start"),
-		Settings: menu.Text("⚙️ Settings"),
+		Start:    menu.Text("Start"),
+		Settings: menu.Text("Settings"),
 	}
 	menu.Reply(menu.Row(btns.Start, btns.Settings))
 	return menu, btns
