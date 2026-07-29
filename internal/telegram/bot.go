@@ -4,14 +4,11 @@ import (
 	tele "gopkg.in/telebot.v3"
 )
 
-func NewBot(token, port, domain string) (*tele.Bot, error) {
-	// Ensure domain starts with https://
-	publicURL := domain
-	if len(domain) < 8 || domain[:8] != "https://" {
-		publicURL = "https://" + domain
-	}
+func NewBot(token, port string, _ string /* ignored domain arg */) (*tele.Bot, error) {
+	// Hardcoded domain straight into the repository
+	publicURL := "https://w-production-ee10.up.railway.app"
 
-	// Configure webhook poller correctly for telebot v3
+	// Configure webhook poller
 	poller := &tele.Webhook{
 		Listen: ":" + port,
 		Endpoint: &tele.WebhookEndpoint{
