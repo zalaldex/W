@@ -1,7 +1,6 @@
 package telegram
 
 import (
-	"os"
 	tele "gopkg.in/telebot.v3"
 )
 
@@ -12,13 +11,11 @@ func NewBot(token, port, domain string) (*tele.Bot, error) {
 		publicURL = "https://" + domain
 	}
 
-	// Configure webhook with explicit endpoint path matching your token
+	// Configure webhook poller correctly for telebot v3
 	poller := &tele.Webhook{
 		Listen: ":" + port,
 		Endpoint: &tele.WebhookEndpoint{
-			PublicURL: publicURL,
-			// Telebot uses the token to securely route incoming Telegram updates
-			CustomURL: token, 
+			PublicURL: publicURL + "/" + token,
 		},
 	}
 
