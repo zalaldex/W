@@ -1,28 +1,18 @@
-# Stage 1: Build the Go binary
-FROM golang:1.22-alpine AS builder
+FROM golang:1.22-alpine AS build
+WORKDIR /src
 
-WORKDIR /app
-
-# Copy dependency files first for efficient caching
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the rest of the source code
+# Copy all repository files
 COPY . .
 
-# Compile a static binary
-RUN CGO_ENABLED=0 GOOS=linux go build -o bot ./cmd/bot
+# Download dependencies and sync go.mod / go.sum
+RUN go mod tidy
 
-# Stage 2: Create a lightweight final image
-FROM alpine:latest
+# Build the binary
+RUN CGO_ENABLED=0 go build -o /bot ./cmd/bot
 
-RUN apk --no-cache add ca-certificates
-
-WORKDIR /root/
-
-# Copy the compiled binary from the builder stage
-COPY --from=builder /app/bot .
-
+FROM alpine:3.20
+RUN apk add --no-cache ca-certificates
+RUN mkdir -p /data
+COPY --from=build /bot /bot
 EXPOSE 8080
-
-CMD ["./bot"]
+ENTRYPOINT ["/bot"]
